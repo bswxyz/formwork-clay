@@ -48,6 +48,36 @@
   // safety net: never leave content hidden even if the observer misbehaves
   setTimeout(revealAll, 2600);
 
+  /* ---------- mood garden: bloom-in on scroll + poke-to-squish ---------- */
+  const garden = document.getElementById('gardenGrid');
+  if (garden) {
+    const bloom = () => garden.classList.add('in');
+    if ('IntersectionObserver' in window) {
+      const gio = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { bloom(); gio.disconnect(); }
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+      gio.observe(garden);
+    } else {
+      bloom();
+    }
+    setTimeout(bloom, 2600); // never leave the garden hidden
+
+    if (!reduce) {
+      garden.querySelectorAll('.pip').forEach((pip) => {
+        const clay = pip.querySelector('.pip-clay');
+        if (!clay) return;
+        pip.addEventListener('pointerdown', () => {
+          clay.classList.remove('squish');
+          void clay.offsetWidth;        // restart the keyframe on rapid re-pokes
+          clay.classList.add('squish');
+        });
+        clay.addEventListener('animationend', (e) => {
+          if (e.animationName === 'pipSquish') clay.classList.remove('squish');
+        });
+      });
+    }
+  }
+
   /* ---------- signature ambient: bob + parallax + poke-to-squish ---------- */
   if (!reduce) {
     const shapes = Array.prototype.slice.call(document.querySelectorAll('.hero-play .shape'));

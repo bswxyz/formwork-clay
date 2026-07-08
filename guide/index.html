@@ -81,7 +81,7 @@
   <h2>The stack</h2>
   <ul class="stack">
     <li><b>Shapes</b> Pure CSS — no images, no 3D. Every blob, star and button is a box-shadow trick.</li>
-    <li><b>Motion</b> ~80 lines of vanilla JS: one <code>requestAnimationFrame</code> loop for bob + parallax.</li>
+    <li><b>Motion</b> ~140 lines of vanilla JS: one <code>requestAnimationFrame</code> loop for bob, parallax &amp; the poke spring.</li>
     <li><b>Type</b> Fredoka (rounded display) paired with Nunito (rounded body).</li>
     <li><b>Deps</b> Zero runtime libraries. Only the two web fonts load over the network.</li>
     <li><b>Host</b> Static files on GitHub Pages, straight from <code>main</code>.</li>
@@ -111,10 +111,22 @@
     <code>drop-shadow()</code> that hugs the outline. The "squish" on buttons and cards is the
     same shadow set, animated — hover lifts and inflates it, <code>:active</code> collapses it
     inward so the whole thing presses into the page.</p>
+  <p>The hero shapes go one step further: <strong>poke one and it springs</strong>. A click sets a
+    negative "squish" value that an under-damped spring pulls back to rest each frame — compress,
+    overshoot, settle. Feeding that scalar into a squash-and-stretch scale (wider when pressed,
+    taller on the rebound) is what sells it as real clay:</p>
+  <pre><code>// per frame: spring the squish back toward 0
+const acc = -K * s.squish - C * s.squishV;
+s.squishV += acc * dt;
+s.squish  += s.squishV * dt;
+// squash &amp; stretch — volume-ish preserving
+const sx = 1 - s.squish * 0.6;   // wider when compressed
+const sy = 1 + s.squish * 0.9;   // flatter when compressed</code></pre>
 
   <h2>Details that matter</h2>
   <ul>
-    <li><strong>Bob &amp; parallax</strong> — each hero shape floats on its own sine wave (different amplitude, speed and phase) and drifts toward the cursor by a per-shape depth.</li>
+    <li><strong>Bob, parallax &amp; poke</strong> — each hero shape floats on its own sine wave (different amplitude, speed and phase), drifts toward the cursor by a per-shape depth, and springs when you click or tap it — all in one <code>requestAnimationFrame</code> loop that pauses off-screen.</li>
+    <li><strong>The mood garden</strong> — thirty clay dots, one per day, bloom in on scroll (staggered by a single <code>--i</code> custom property) and bob on their own CSS loops. Poke any day and a pure-CSS squash-and-stretch keyframe fires — the same idea as the hero, kept lightweight so all thirty stay smooth.</li>
     <li><strong>Never blank</strong> — the hero intro is CSS keyed on a <code>.loaded</code> class added on a double <code>requestAnimationFrame</code> with a 400&nbsp;ms failsafe, so it can't hang.</li>
     <li><strong>JS-gated hiding</strong> — content is only hidden once a <code>js</code> class lands on <code>&lt;html&gt;</code>; if the script never runs, everything simply shows.</li>
     <li><strong>Reduced motion</strong> — <code>prefers-reduced-motion</code> stops the bob, freezes the shapes and makes every hover instant.</li>
