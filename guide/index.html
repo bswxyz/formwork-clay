@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>CLAY — Guide · How this was built</title>
-<meta name="description" content="How the CLAY site was designed and built by Fable: a pure-CSS claymorphism system, sine-driven floating shapes, and static hosting on GitHub Pages." />
+<meta name="description" content="How the CLAY site was designed and built by Formwork: a pure-CSS claymorphism system, sine-driven floating shapes, and static hosting on GitHub Pages." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -68,7 +68,7 @@
 
   <span class="tag">Build guide · Site 11 of 25</span>
   <h1>Journaling that feels like <em>play</em>.</h1>
-  <p class="lede">CLAY is one of 25 sites designed and built by Fable to show off web design,
+  <p class="lede">CLAY is one of 25 sites designed and built by Formwork to show off web design,
     motion and taste. Here's exactly how this squishy one came together — and how you can make
     the same thing.</p>
 
@@ -135,8 +135,8 @@ const sy = 1 + s.squish * 0.9;   // flatter when compressed</code></pre>
   <h2>Ship it on GitHub Pages</h2>
   <p>Everything here is static, so hosting is three commands:</p>
   <pre><code>git init -b main && git add -A && git commit -m "ship clay"
-gh repo create fable-clay --public --source=. --push
-gh api --method POST /repos/OWNER/fable-clay/pages \
+gh repo create formwork-clay --public --source=. --push
+gh api --method POST /repos/OWNER/formwork-clay/pages \
   -f 'source[branch]=main' -f 'source[path]=/'</code></pre>
   <p>Use <strong>relative paths</strong> (<code>./main.js</code>, not <code>/main.js</code>) because
     project Pages live under <code>/repo-name/</code>. Drop in an empty <code>.nojekyll</code> file so
@@ -147,7 +147,7 @@ gh api --method POST /repos/OWNER/fable-clay/pages \
     The other 24 sites each swap the central trick — shaders, kinetic type, particles — but the
     discipline stays the same: one idea, executed until it feels effortless.</p>
 
-  <footer>Designed &amp; built by <strong>Fable</strong> · Part of a 25-site showcase ·
+  <footer>Designed &amp; built by <strong>Formwork</strong> · Part of a 25-site showcase ·
     <a href="../">Return to CLAY →</a></footer>
 </div>
 </body>
